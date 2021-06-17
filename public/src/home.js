@@ -10,7 +10,7 @@ function _sortObjectByValues(obj) {
       return 0;
     }
   });
-} 
+}
 
 function getTotalBooksCount(books) {
   return books.length;
@@ -21,42 +21,41 @@ function getTotalAccountsCount(accounts) {
 }
 
 function getBooksBorrowedCount(books) {
-  let loaned = books.filter((book) => !book.borrows[0].returned)
-  return loaned.length
+  let loaned = books.filter((book) => !book.borrows[0].returned);
+  return loaned.length;
 }
 
 function getMostCommonGenres(books) {
   //let listOfGenres = books.map((book) => book.genre)
-  let something = books.reduce((acc, {genre}) => {
-    if (acc[genre]){
-      acc[genre].push(1)  
-    } else{
-      acc[genre] = [1]
+  let listOfGenres = books.reduce((acc, { genre }) => {
+    if (acc[genre]) {
+      acc[genre].push(1);
+    } else {
+      acc[genre] = [1];
     }
-    return acc
-  },{}) 
-  for (let id in something) {
-    const sum = something[id].reduce((acc, b) => acc + b);
-    something[id] = sum;
+    return acc;
+  }, {});
+  for (let id in listOfGenres) {
+    const sum = listOfGenres[id].reduce((acc, b) => acc + b);
+    listOfGenres[id] = sum;
   }
-  const sorted = _sortObjectByValues(something)
-  let arr = sorted.map((authorId) => { 
-    return {name: authorId,count: something[authorId]}
+  const sorted = _sortObjectByValues(listOfGenres);
+  let arr = sorted.map((authorId) => {
+    return { name: authorId, count: listOfGenres[authorId] };
   });
   return arr.slice(0, 5);
 }
 
 function getMostPopularBooks(books) {
   let popularityBooks = [];
-    books.forEach((book) => {
-      popularityBooks.push({"name": book.title, "count": book.borrows.length});
-    });
+  books.forEach((book) => {
+    popularityBooks.push({ name: book.title, count: book.borrows.length });
+  });
   popularityBooks.sort((a, b) => b.count - a.count);
- 
-  let numberItems=5;
-  return popularityBooks.slice(0, numberItems);    
-}
 
+  let numberItems = 5;
+  return popularityBooks.slice(0, numberItems);
+}
 
 function getMostPopularAuthors(books, authors) {
   const count = books.reduce((acc, { authorId, borrows }) => {
